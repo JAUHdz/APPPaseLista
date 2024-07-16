@@ -1,0 +1,54 @@
+/* For information on how to create your own theme, please see:
+http://ionicframework.com/docs/theming/ */
+
+:root {
+  /* Degradado utilizado en configuracion: modo claro */
+  --gradient-light: linear-gradient(to bottom, #99cede, #ffffff);
+
+  --ion-background-color: #ffffff;
+  --ion-text-color: #000000;
+
+  --ion-color-primary: #2a79c3;
+  --ion-color-primary-rgb: 56,128,255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+
+  --ion-color-red: #ff0000;
+  --ion-color-red-rgb: 220,20,60;
+  --ion-color-red-contrast: #ffffff;
+  --ion-color-red-contrast-rgb: 255,255,255;
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+     /* Degradado utilizado en configuracion: modo oscuro */
+    --gradient-dark: linear-gradient(to bottom, #134c5d, #121212);
+
+    --ion-background-color: #121212;
+    --ion-text-color: #ffffff;
+
+    --ion-color-primary: #2a79c3;
+    --ion-color-primary-rgb: 235,68,90;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255,255,255;
+
+    --ion-color-red: #ff0000;
+    --ion-color-red-rgb: 220,20,60;
+    --ion-color-red-contrast: #ffffff;
+    --ion-color-red-contrast-rgb: 255,255,255;
+  }
+}
+
+ion-button[color="red"] {
+  background-color: var(--ion-color-red);
+  color: var(--ion-color-red-contrast);
+}
+
+ion-button[color="blue"] {
+  background-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+
+
