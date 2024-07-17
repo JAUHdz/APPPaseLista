@@ -80,7 +80,7 @@
           const User = localStorage.getItem('User-login');
           if (User) {
             const NameUser = JSON.parse(User);
-            this.UserName = NameUser.nom_usuario;  
+            this.UserName = NameUser.nombre;  
             console.log("Datos obtenidos correctamente");
           } else {
             console.log("Vuelvaa iniciar sesion para evitar cualquier error con la sesion iniciada");

@@ -74,13 +74,13 @@
           const User = localStorage.getItem('User-login');
           if (User) {
             const NameUser = JSON.parse(User);
-            this.UserName = NameUser.nom_usuario; 
-            this.idUser= NameUser.idusucattipousuario; 
-                if(NameUser.idusucattipousuario==2){
+            this.UserName = NameUser.nombre; 
+            this.idUser= NameUser.id_usu_tipo; 
+                if(NameUser.id_usu_tipo==2){
                     this.TypeUser= "EMPLEADO"; 
-                }else if(NameUser.idusucattipousuario==3){
+                }/*else if(NameUser.idusucattipousuario==3){
                     this.TypeUser= "OPERADOR";
-                }
+                }*/
            // console.log("Datos obtenidos correctamente");
           } else {
             //console.log("Vuelva iniciar sesion para evitar cualquier error con la sesion iniciada");

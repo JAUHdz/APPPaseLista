@@ -19,7 +19,7 @@
         const user = localStorage.getItem('User-login');
         if (user) {
         const nameUser = JSON.parse(user);
-        typeUser.value = nameUser.idusucattipousuario;
+        typeUser.value = nameUser.id_usu_tipo;
         console.log("Datos obtenidos correctamente");
         } else {
         console.log("Vuelva a iniciar sesión para evitar cualquier error con la sesión iniciada");

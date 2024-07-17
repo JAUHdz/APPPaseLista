@@ -23,15 +23,11 @@
               <ion-col class="Center-icons">
                 <ion-icon class="size-icons" color="primary" :icon="busOutline"></ion-icon>
               </ion-col>
-              <ion-col class="Center-icons">
-                <ion-icon class="size-icons" color="primary" :icon="archiveOutline"></ion-icon>
-              </ion-col>
             </ion-row>
 
             <div style="height: 220px; overflow-y: auto;">
-              <ion-row v-for="index in Math.max(qrCodes.array1.length, qrCodes.array2.length)" :key="index - 1" :class="{ 'highlight': qrCodes.array2[index - 1] !== qrCodes.array1[index - 1], 'highlight-green': qrCodes.array2[index - 1] === qrCodes.array1[index - 1]}">
-                <ion-col>{{ qrCodes.array1[index - 1] || '' }}</ion-col>
-                <ion-col>{{ qrCodes.array2[index - 1] || '' }}</ion-col>
+              <ion-row  :class="('highlight')">
+                <ion-col>{{ qrCodes }}</ion-col>
               </ion-row>
             </div>
 
@@ -57,36 +53,9 @@
         </ion-card-content>
       </ion-card>
     </ion-content>
-
-    <div v-if="dialogOpen" class="custom-dialog">
-      <div class="dialog-content">
-        <h4>Selecciona la parte a escanear</h4> 
-        
-        <ion-grid>
-          <ion-row>
-            <ion-col class="Center-icons">
-              <ion-icon class="size-icons-after-camera" color="primary" :icon="busOutline" @click="selectArray(1)"></ion-icon>
-            </ion-col>
-            <ion-col class="Center-icons">
-              <ion-icon class="size-icons-after-camera" color="primary" :icon="archiveOutline" @click="selectArray(2)"></ion-icon>
-            </ion-col>
-          </ion-row>
-          <br>
-          <ion-row>
-            <ion-col class="Center-icons" >
-              <ion-button color="danger" class="Center-icons" @click="cancelar">CANCELAR</ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-
-        <div>
-          
-        </div>
-      </div>
-    </div>
     
     <ion-fab horizontal="end" vertical="bottom">
-      <ion-fab-button @click="openDialog" class="Center-icons">
+      <ion-fab-button @click="openCameraModal()" class="Center-icons">
         <ion-icon :icon="scanOutline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
@@ -98,6 +67,7 @@
                 <div class="contenedor borde">
                  <qrcode-stream @detect="onDetect"></qrcode-stream>
               </div>
+              <ion-button style="margin-top:20px;" color="danger" @click="cancelar">Cancelar</ion-button>
             </div>
         </div>
     </ion-page>
@@ -112,7 +82,7 @@ import { QrcodeStream } from 'vue-qrcode-reader';
 import {scanOutline, archiveOutline, busOutline} from 'ionicons/icons';
 import ToolbarReutilizableComponent from '../components/ToolbarReutilizableComponent.vue'
 
-const qrCodes = ref({ array1: [], array2: [] });
+const qrCodes = ref(null);
 const dialogOpen = ref(false);
 const cameraModalOpen = ref(false);
 const selectedArray = ref('array1');
@@ -125,11 +95,13 @@ const Userid = JSON.parse(Userlogin);
 
 const onDetect = (detectedCodes) => {
   detectedCodes.forEach(code => {
-    qrCodes.value[selectedArray.value].push(code.rawValue);
+    qrCodes.value=code.rawValue;
+    console.log(qrCodes.value);
   });
   localStorage.setItem('qrCodes', JSON.stringify(qrCodes.value));
   closeCameraModal();
-  peticiones();
+  controlHorario();
+ // peticiones();
 };
 
 const openDialog = () => {
@@ -158,7 +130,7 @@ const vaciarArreglos = () => {
 };
 
 const cancelar = () => {
-  dialogOpen.value = false;
+  cameraModalOpen.value = false;
 };
 
 // Método para obtener la ubicación actual
@@ -190,6 +162,31 @@ const obtenerUbicacionDetallada = async (lat, lon) => {
   }
 };
 
+//Metodo para registrar en la entrada y salida 
+const controlHorario = () => {
+  for (let z=0; z<2; z++){
+    if(x==1){
+      console.log("SALIDA");
+      metodop2();
+      x=0;
+      z=2;
+    }
+    if(z==0){
+      x=x+1;
+      console.log("ENTRADA");
+      metodop();
+      z=2;
+    }
+  }
+}
+
+const metodop = ()=>{
+  console.log("Prueba");
+}
+
+const metodop2 = ()=>{
+  console.log("Prueba2");
+}
 
 //Fetch para Post Aditivos
 let vali;
@@ -286,7 +283,6 @@ const peticiones = () => {
 }
 
 .highlight {
-  background-color: #FBC1C1;
   text-align: center;
   color: black;
 }
