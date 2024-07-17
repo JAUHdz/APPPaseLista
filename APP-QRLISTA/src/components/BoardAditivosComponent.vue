@@ -24,27 +24,25 @@
             </ion-row>
             <ion-row>
                 <ion-col class="pagination-text">Usuario</ion-col>
-                <ion-col class="pagination-text">Aditivo</ion-col>
-                <ion-col class="pagination-text">Contenedor</ion-col>
-                <ion-col class="pagination-text">Vaciado</ion-col>
                 <ion-col class="pagination-text">Fecha</ion-col>
+                <ion-col class="pagination-text">Hora de entrada</ion-col>
+                <ion-col class="pagination-text">Hora de salida</ion-col>
                 <ion-col class="pagination-text">Ubicacion</ion-col>
                 <ion-col class="pagination-text">Acciones</ion-col>
             </ion-row>
             <!-- Verificar si usuarioTabla está vacío o no -->
-            <ion-row v-if="paginatedAditivos.length === 0">
+            <ion-row v-if="paginatedControl.length === 0">
               <ion-col>No hay usuarios para mostrar</ion-col>
             </ion-row>
 
-            <ion-row v-else v-for="aditivo in paginatedAditivos" :key="aditivo.id_aditivos" class="table-space">
-                <ion-col class="pagination-text">{{ aditivo.UsuarioDato ? aditivo.UsuarioDato.nom_usuario : 'N/A' }}</ion-col>
-                <ion-col class="pagination-text">{{ aditivo.nom_aditivo }}</ion-col>
-                <ion-col class="pagination-text">{{ aditivo.nom_contenedor }}</ion-col>
-                <ion-col class="pagination-text">{{ aditivo.validacion }}</ion-col>
-                <ion-col class="pagination-text">{{ aditivo.fecha }}</ion-col>
-                <ion-col class="pagination-text">{{ aditivo.localizacion }}</ion-col>
+            <ion-row v-else v-for="control in paginatedControl" :key="control.id_aditivos" class="table-space">
+                <ion-col class="pagination-text">{{ control.UsuarioDato ? control.UsuarioDato.nombre : 'N/A' }}</ion-col>
+                <ion-col class="pagination-text">{{ control.fecha }}</ion-col>
+                <ion-col class="pagination-text">{{ control.hora_entrada }}</ion-col>
+                <ion-col class="pagination-text">{{ control.hora_salida }}</ion-col>
+                <ion-col class="pagination-text">{{ control.localizacion }}</ion-col>
                 <ion-col class="pagination-text">
-                  <ion-icon :icon="trashOutline" class="Icon" color="danger" @click.prevent="openalert(aditivo.id_aditivos)"></ion-icon>
+                  <ion-icon :icon="trashOutline" class="Icon" color="danger" @click.prevent="openalert(control.id_aditivos)"></ion-icon>
                   <ion-alert :is-open="deletealert" class="custom-alert" header="Estás seguro de eliminar este registro?" :buttons="alertButtons"></ion-alert>
                 </ion-col>
             </ion-row>
@@ -84,7 +82,7 @@
     },
     data (){
         return {
-            aditivosTabla: [],
+            controlTabla: [],
             usuarioTabla: [],
             searchName: '',
             searchDate: '',
@@ -107,24 +105,24 @@
     methods: {
       async ConsultarAditivosVaciados() {
             try {
-                const responseAditivos = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Cat_Aditivos');
-                this.aditivosTabla = await responseAditivos.json();
+                const responseAditivos = await fetch('http://localhost:3000/api/controlhorario/consulta');
+                this.controlTabla = await responseAditivos.json();
                 console.log("Consulta exitosa de aditivos");
             } catch (error) {
                 console.error("Error en la consulta de los Aditivos:", error);
             }
   
             try {
-                const responseUsuarios = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Usu_Usuarios');
+                const responseUsuarios = await fetch('http://localhost:3000/api/usuusuarios/consulta');
                 this.usuarioTabla = await responseUsuarios.json();
                 console.log("Consulta exitosa de usuarios");
             } catch (error) {
                 console.error("Error en la consulta de Usuarios:", error);
             }
   
-            this.aditivosTabla = this.aditivosTabla.map(aditivo => {
-                aditivo.UsuarioDato = this.usuarioTabla.find(usuario => usuario.id_usuario === aditivo.id_usuusuario);  
-                return aditivo;
+            this.controlTabla = this.controlTabla.map(control => {
+              control.UsuarioDato = this.usuarioTabla.find(usuario => usuario.id_usuario === control.id_usuario);  
+                return control;
             });
       },
 
@@ -168,23 +166,23 @@
     },
     computed: {
       
-      filteredAditivos() {
-        return this.aditivosTabla.filter(aditivo => {
-          const matchesName = this.searchName ? (aditivo.UsuarioDato && aditivo.UsuarioDato.nom_usuario.toLowerCase().includes(this.searchName.toLowerCase())) : true;
-          const matchesDate = this.searchDate ? aditivo.fecha.substring(0, 10) === this.searchDate.substring(0, 10) : true;
-          const matchesVaciado = this.searchVaciado ? aditivo.validacion.toLowerCase() === this.searchVaciado.toLowerCase() : true;
+      filteredControl() {
+        return this.controlTabla.filter(control => {
+          const matchesName = this.searchName ? (control.UsuarioDato && control.UsuarioDato.nombre.toLowerCase().includes(this.searchName.toLowerCase())) : true;
+          const matchesDate = this.searchDate ? control.fecha.substring(0, 10) === this.searchDate.substring(0, 10) : true;
+          const matchesVaciado = this.searchVaciado ? aditivo.hora_entrada.toLowerCase() === this.searchVaciado.toLowerCase() : true;
           return matchesName && matchesDate && matchesVaciado;
         });
       },
 
-      paginatedAditivos() {
+      paginatedControl() {
         const start = (this.currentPage - 1) * this.itemsPerPage;
         const end = start + this.itemsPerPage;
-        return this.filteredAditivos.slice(start, end);
+        return this.filteredControl.slice(start, end);
       },
     
       totalPages() {
-        return Math.ceil(this.filteredAditivos.length / this.itemsPerPage);
+        return Math.ceil(this.filteredControl.length / this.itemsPerPage);
       },
       alertButtons() {
       return [

@@ -5,7 +5,13 @@
             <div class="container">
                 <ion-label class="register"><b>REGISTRO</b></ion-label>
                 <div class="separation">
-                    <ion-label>Usuario</ion-label>
+                    <ion-label>Nombre</ion-label>
+                    <ion-input v-model="nombre" label-placement="floating" fill="outline" class="spacing" maxlength="10"></ion-input>
+                    <ion-label>Apellido Paterno</ion-label>
+                    <ion-input v-model="apellidop" label-placement="floating" fill="outline" class="spacing" maxlength="10"></ion-input>
+                    <ion-label>Apellido Materno</ion-label>
+                    <ion-input v-model="apellidom" label-placement="floating" fill="outline" class="spacing" maxlength="10"></ion-input>
+                    <ion-label>Nombre de Usuario</ion-label>
                     <ion-input v-model="username" label-placement="floating" fill="outline" class="spacing" maxlength="10"></ion-input>
                     <ion-label>Contraseña</ion-label>
                     <ion-input v-model="password" label-placement="floating" fill="outline" type="password" class="spacing" maxlength="9" pattern="[a-zA-Z0-9]+">
@@ -16,7 +22,6 @@
                         <ion-select v-model="selectedState" placeholder="Activo" class="ion-select-fixed">
                             <ion-select-option value="1">Activo</ion-select-option>
                             <ion-select-option value="2">Inactivo</ion-select-option>
-                            <ion-select-option value="3">Suspendido</ion-select-option>
                         </ion-select>
                     </ion-item>
                     <ion-label>Tipo</ion-label>
@@ -24,11 +29,11 @@
                         <ion-select aria-label="Tipo Usuario" v-model="selectedType" placeholder="Administrador" class="ion-select-fixed">
                             <ion-select-option value="1">Administrador</ion-select-option>
                             <ion-select-option value="2">Empleado</ion-select-option>
-                            <ion-select-option value="3">Operador</ion-select-option>
                         </ion-select>
                     </ion-item>
                 </div>
                 <ion-button @click="register" fill="solid" style="margin-top:50px; margin-bottom:50px">Registrar</ion-button>
+                <ion-button  color="danger" @click="salir">Cancelar</ion-button>
             </div>
             <ion-alert         
             :is-open="showAlert"
@@ -62,6 +67,9 @@ export default {
     data() {
         return {
             username: '',
+            nombre:'',
+            apellidop:'',
+            apellidom:'',
             password: '',
             selectedState: '',
             selectedType: '',
@@ -79,7 +87,7 @@ export default {
                     return;
                 }
 
-                const responseCheckUser = await fetch(`https://cemexapi20240515142245.azurewebsites.net/api/Usu_Usuarios?nom_usuario=${encodeURIComponent(this.username)}`);
+                const responseCheckUser = await fetch(`http://localhost:3000/api/usuusuarios/consulta`);
                 if (!responseCheckUser.ok) {
                     this.showAlertDR('Error al verificar el usuario');
                     return;
@@ -92,16 +100,19 @@ export default {
                     return;
                 }
 
-                const registerReply = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Usu_Usuarios', {
+                const registerReply = await fetch('http://localhost:3000/api/usuusuarios/crear', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
+                        nombre: this.nombre,
+                        apellido_paterno: this.apellidop,
+                        apellido_materno: this.apellidom,
                         nom_usuario: this.username,
                         contrasena: this.password,
-                        idusucatestado: parseInt(this.selectedState),
-                        idusucattipousuario: parseInt(this.selectedType)
+                        id_usu_tipo: parseInt(this.selectedType),
+                        id_usu_estado: parseInt(this.selectedState)
                     })
                 });
 
@@ -111,6 +122,7 @@ export default {
                 }
 
                 this.showAlertDR('Excelente!', 'Registro exitoso');
+                this.$router.push("/tabs");
             } catch (error) {
                 console.error('Error en el registro:');
                 this.showAlertDR('Error', 'Por favor intenta nuevamente');
@@ -126,6 +138,9 @@ export default {
                 }
             }];
             this.showAlert = true;
+        },
+        salir(){
+            this.$router.push("/tabs");
         }
     }
 };
