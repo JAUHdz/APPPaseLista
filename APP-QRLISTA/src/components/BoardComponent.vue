@@ -40,7 +40,7 @@
             </ion-col>
           </ion-row>
           <ion-row >  
-            <ion-col class="pagination-text">User</ion-col>
+            <ion-col class="pagination-text">Usuario</ion-col>
             <ion-col class="pagination-text">Tipo</ion-col>
             <ion-col class="pagination-text">Estado</ion-col>
             <ion-col class="pagination-text">Acciones</ion-col>
@@ -51,7 +51,7 @@
           </ion-row>
           <!-- Utilizar v-if para verificar si usuarioTabla tiene datos antes de iterar -->
           <ion-row v-else v-for="usuario in paginatedUsers" :key="usuario.id_usuario" class="table-row table-space " >
-            <ion-col class="pagination-text">{{ usuario.nom_usuario }}</ion-col>
+            <ion-col class="pagination-text">{{ usuario.nombre }}</ion-col>
             <ion-col class="pagination-text">{{ usuario.tipoUsuario ? usuario.tipoUsuario.nom_tipo : 'N/A' }}</ion-col>
             <ion-col class="pagination-text">{{ usuario.estadoUsuario ? usuario.estadoUsuario.nom_estado : 'N/A' }}</ion-col>
             <ion-col class="pagination-text">
@@ -164,10 +164,10 @@ export default {
   computed: {
     filteredUsers() {
       return this.usuarioTabla.filter(usuario => {
-        const matchesName = this.searchName ? usuario.nom_usuario.toLowerCase().includes(this.searchName.toLowerCase()) : true;
+        const matchesName = this.searchName ? usuario.nombre.toLowerCase().includes(this.searchName.toLowerCase()) : true;
         const matchesType = this.searchType ? (usuario.tipoUsuario && usuario.tipoUsuario.nom_tipo === this.searchType) : true;
         const matchesState = this.searchState ? (usuario.estadoUsuario && usuario.estadoUsuario.nom_estado === this.searchState) : true;
-        const hideUserLogged = usuario.nom_usuario !== this.userLoggedinApp.nom_usuario;
+        const hideUserLogged = usuario.nombre !== this.userLoggedinApp.nombre;
         return matchesName && matchesType && matchesState && hideUserLogged;
       });
     },
@@ -206,7 +206,7 @@ export default {
 
     async ConsultasDatos() {
       try {
-        const responseUsuarios = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Usu_Usuarios');
+        const responseUsuarios = await fetch('http://localhost:3000/api/usuusuarios/consulta');
         this.usuarioTabla = await responseUsuarios.json();
         console.log("Consulta exitosa");
       } catch (error) {
@@ -214,7 +214,7 @@ export default {
       }
 
       try {
-        const responseTipo = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Usu_Cat_Tipos_Usuarios');
+        const responseTipo = await fetch('http://localhost:3000/api/tipousuarios/consulta');
         this.tipoTabla = await responseTipo.json();
         console.log("Consulta exitosa");
       } catch (error) {
@@ -222,7 +222,7 @@ export default {
       }
 
       try {
-        const responseEstado = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Usu_Cat_Estados');
+        const responseEstado = await fetch('http://localhost:3000/api/estadousuarios/consulta');
         this.estadoTabla = await responseEstado.json();
         console.log("Consulta exitosa");
       } catch (error) {
@@ -230,8 +230,8 @@ export default {
       }
 
       this.usuarioTabla = this.usuarioTabla.map(usuario => {
-        usuario.tipoUsuario = this.tipoTabla.find(tipo => tipo.id_tipo === usuario.idusucattipousuario);
-        usuario.estadoUsuario = this.estadoTabla.find(estado => estado.id_estado === usuario.idusucatestado);
+        usuario.tipoUsuario = this.tipoTabla.find(tipo => tipo.id_tipo === usuario.id_usu_tipo);
+        usuario.estadoUsuario = this.estadoTabla.find(estado => estado.id_estado === usuario.id_usu_estado);
         return usuario;
       });
     },
@@ -249,7 +249,7 @@ export default {
     
     async DeleteGetId(id_user) {
       try {
-        await fetch(`https://cemexapi20240515142245.azurewebsites.net/api/Usu_Usuarios?id=${id_user}`, {
+        await fetch(`http://localhost:3000/api/usuusuarios/eliminar/${id_user}`, {
         method: 'DELETE'
         });
         console.log('Usuario eliminado correctamente', id_user)
