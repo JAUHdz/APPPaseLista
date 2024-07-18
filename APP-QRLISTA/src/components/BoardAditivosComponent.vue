@@ -42,7 +42,7 @@
                 <ion-col class="pagination-text">{{ control.hora_salida }}</ion-col>
                 <ion-col class="pagination-text">{{ control.localizacion }}</ion-col>
                 <ion-col class="pagination-text">
-                  <ion-icon :icon="trashOutline" class="Icon" color="danger" @click.prevent="openalert(control.id_aditivos)"></ion-icon>
+                  <ion-icon :icon="trashOutline" class="Icon" color="danger" @click.prevent="openalert(control.id_control)"></ion-icon>
                   <ion-alert :is-open="deletealert" class="custom-alert" header="Estás seguro de eliminar este registro?" :buttons="alertButtons"></ion-alert>
                 </ion-col>
             </ion-row>
@@ -150,16 +150,16 @@
         this.deletealert= false;
       },
 
-      async DeleteGetId(id_aditivo) {
+      async DeleteGetId(id_c) {
       try {
-        await fetch(`https://cemexapi20240515142245.azurewebsites.net/api/Cat_Aditivos?id=${id_aditivo}`, {
+        await fetch(`http://localhost:3000/api/controlhorario/eliminar/${id_c}`, {
         method: 'DELETE'
         });
-        console.log('Aditivo eliminado correctamente', id_aditivo)
+        console.log('Registro eliminado correctamente', id_c)
         this.deletealert= false;
         this.ConsultarAditivosVaciados();
       } catch (error) {
-        console.error("Error al eliminar el Aditivo:", error);
+        console.error("Error al eliminar el Registro:", error);
         this.deletealert= false;
       }
     },

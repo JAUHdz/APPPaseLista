@@ -21,7 +21,7 @@
 
             <ion-row class="custom-border-bottom">
               <ion-col class="Center-icons">
-                <ion-icon class="size-icons" color="primary" :icon="busOutline"></ion-icon>
+                <ion-icon style="width: 90px; height: 90px;" color="primary" :icon="scanOutline"></ion-icon>
               </ion-col>
             </ion-row>
 
@@ -162,6 +162,22 @@ const obtenerUbicacionDetallada = async (lat, lon) => {
   }
 };
 
+const getCurrentDate = () => {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+   const getCurrentTime = ()=> {
+      const date = new Date();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${hours}:${minutes}:${seconds}`;
+    }
+
 //Metodo para registrar en la entrada y salida 
 const controlHorario = () => {
   for (let z=0; z<2; z++){
@@ -180,12 +196,64 @@ const controlHorario = () => {
   }
 }
 
-const metodop = ()=>{
-  console.log("Prueba");
+const metodop = async () => {
+  const fecha = getCurrentDate();
+  const horaEntrada = getCurrentTime();
+  const horaSalida = null; // Si necesitas registrar la hora de salida más tarde, ajusta esto.
+  
+  const data = {
+    id_usuario: Userid.id_usuario, // Reemplaza con el ID del usuario correspondiente
+    fecha: fecha,
+    hora_entrada: horaEntrada,
+    hora_salida: horaSalida,
+    localizacion: ubicacionDetallada.value // Reemplaza con la localización correspondiente
+  };
+
+  try {
+    const response = await fetch('http://localhost:3000/api/controlhorario/crear', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la solicitud');
+    }
+
+    const result = await response.json();
+    console.log('Respuesta del servidor:', result);
+
+    localStorage.setItem('idControlHorario', JSON.stringify(result.id));
+    localStorage.setItem('ControlHorario', JSON.stringify(data));
+    alert("Almacenado correctamente en la base de datos");
+
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    alert('Error en la solicitud:', error);
+  }
 }
 
 const metodop2 = ()=>{
   console.log("Prueba2");
+
+  const cid = localStorage.getItem('idControlHorario');
+  const conid = JSON.parse(cid);
+  console.log(conid);
+
+  const c = localStorage.getItem('ControlHorario');
+  const con = JSON.parse(c);
+  console.log(con);
+
+  const Salida = getCurrentTime();
+  const datos = {
+    id_usuario: con.id_usuario, // Reemplaza con el ID del usuario correspondiente
+    fecha: con.fecha,
+    hora_entrada: con.horaEntrada,
+    hora_salida: Salida,
+    localizacion: con.localizacion// Reemplaza con la localización correspondiente
+  };
 }
 
 //Fetch para Post Aditivos
