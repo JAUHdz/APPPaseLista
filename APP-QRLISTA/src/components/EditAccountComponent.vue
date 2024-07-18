@@ -9,6 +9,15 @@
         </div>
         <div class="container">
             <div class="separation">
+                <ion-label>Nombre</ion-label>
+                <ion-input v-model="nombre" label-placement="floating" fill="outline" class="spacing" maxlength="10" :value="username"></ion-input>
+
+                <ion-label>Apellido Paterno</ion-label>
+                <ion-input v-model="apellp" label-placement="floating" fill="outline" class="spacing" maxlength="10" :value="username"></ion-input>
+
+                <ion-label>Apellido Materno</ion-label>
+                <ion-input v-model="apellm" label-placement="floating" fill="outline" class="spacing" maxlength="10" :value="username"></ion-input>
+
                 <ion-label>Usuario</ion-label>
                 <ion-input v-model="username" label-placement="floating" fill="outline" class="spacing" maxlength="10" :value="username"></ion-input>
                 
@@ -33,7 +42,7 @@
             
             <div class="Button-container">
                 <ion-button class="button-space" @click.prevent="handleButtonCancel" fill="outline"  color="danger">CANCELAR</ion-button>
-                <ion-button class="button-space" @click.prevent="UpdateUser" fill="solid" color="primary">GUARDAR</ion-button>
+                <ion-button class="button-space" @click.prevent="UpdateUser(IdUserEdit)" fill="solid" color="primary">GUARDAR</ion-button>
             </div>
         </div>
     </ion-content>
@@ -61,6 +70,9 @@ export default {
     },
     data() {
         return {
+            nombre:'',
+            apellp:'',
+            apellm: '',
             username: '',
             password: '',
             selectedState: '',
@@ -92,7 +104,7 @@ export default {
                 this.IdUserEdit = JSON.parse(id_user_edit);
                 console.log(this.IdUserEdit);
 
-                const responseUsuarios = await fetch(`https://cemexapi20240515142245.azurewebsites.net/api/Usu_Usuarios/${this.IdUserEdit}`);
+                const responseUsuarios = await fetch(`http://localhost:3000/api/usuusuarios/consulta/${this.IdUserEdit}`);
                 this.DataUser = await responseUsuarios.json();
                 console.log("Consulta exitosa");
             } catch (error) {
@@ -100,7 +112,7 @@ export default {
             }
 
             try {
-                const responseTipo = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Usu_Cat_Tipos_Usuarios');
+                const responseTipo = await fetch('http://localhost:3000/api/tipousuarios/consulta');
                 this.TypeData = await responseTipo.json();
                 console.log("Consulta exitosa");
             } catch (error) {
@@ -108,7 +120,7 @@ export default {
             }          
             
             try {
-                const responseEstado = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Usu_Cat_Estados');
+                const responseEstado = await fetch('http://localhost:3000/api/estadousuarios/consulta');
                 this.StateData = await responseEstado.json();
                 console.log("Consulta exitosa");
             } catch (error) {
@@ -116,26 +128,31 @@ export default {
             }
 
             if (this.DataUser) {
+                this.nombre = this.DataUser.nombre;
+                this.apellp = this.DataUser.apellido_paterno;
+                this.apellm = this.DataUser.apellido_materno;
                 this.username = this.DataUser.nom_usuario;
                 this.password = this.DataUser.contrasena;
-                this.selectedState = this.DataUser.idusucatestado;
-                this.selectedType = this.DataUser.idusucattipousuario;
+                this.selectedState = this.DataUser.id_usu_estado;
+                this.selectedType = this.DataUser.id_usu_tipo;
             }
         },
 
-        async UpdateUser(){
+        async UpdateUser(id){
 
             try {
-                const response = await fetch('https://cemexapi20240515142245.azurewebsites.net/api/Usu_Usuarios', {
+                const response = await fetch(`http://localhost:3000/api/usuusuarios/actualizar/${id}`, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        id_usuario: this.IdUserEdit,
+                        nombre: this.nombre,
+                        apellido_paterno: this.apellp,
+                        apellido_materno: this.apellm,
                         nom_usuario: this.username,
                         contrasena: this.password,
-                        idusucatestado: parseInt(this.selectedState),
-                        idusucattipousuario: parseInt(this.selectedType)
+                        id_usu_tipo: this.selectedType,
+                        id_usu_estado: this.selectedState
                     })
                 });
 
