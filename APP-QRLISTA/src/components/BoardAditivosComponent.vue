@@ -8,15 +8,15 @@
           <ion-grid>
             <ion-row>
               <ion-col class="pagination-text" size="12">
-                <h3>Tabla aditivos vaciados</h3>
+                <h3>Tabla Control Horario</h3>
               </ion-col>
             </ion-row>
             <ion-row style="margin-bottom: 15px">
               <ion-col>
-                <ion-input placeholder="Username" v-model="searchName"></ion-input>
+                <ion-input placeholder="Nombre" v-model="searchName"></ion-input>
               </ion-col>
               <ion-col>
-                <ion-input placeholder="Vaciado" v-model="searchVaciado"></ion-input>
+                <ion-input type="time" laceholder="Vaciado" v-model="searchVaciado"></ion-input>
               </ion-col>
               <ion-col>
                 <ion-input  type="date" placeholder="Fecha" v-model="searchDate"></ion-input>
@@ -32,7 +32,7 @@
             </ion-row>
             <!-- Verificar si usuarioTabla está vacío o no -->
             <ion-row v-if="paginatedControl.length === 0">
-              <ion-col>No hay usuarios para mostrar</ion-col>
+              <ion-col>No hay registros para mostrar</ion-col>
             </ion-row>
 
             <ion-row v-else v-for="control in paginatedControl" :key="control.id_aditivos" class="table-space">
@@ -103,7 +103,7 @@
       }
     },
     methods: {
-      async ConsultarAditivosVaciados() {
+      async ConsultarRegistros() {
             try {
                 const responseAditivos = await fetch('http://localhost:3000/api/controlhorario/consulta');
                 this.controlTabla = await responseAditivos.json();
@@ -139,7 +139,7 @@
       },
 
       async handleRefresh(event) {
-        await this.ConsultarAditivosVaciados();
+        await this.ConsultarRegistros();
         event.target.complete();  
       },
       openalert(id_user){
@@ -157,7 +157,7 @@
         });
         console.log('Registro eliminado correctamente', id_c)
         this.deletealert= false;
-        this.ConsultarAditivosVaciados();
+        this.ConsultarRegistros();
       } catch (error) {
         console.error("Error al eliminar el Registro:", error);
         this.deletealert= false;
@@ -170,7 +170,9 @@
         return this.controlTabla.filter(control => {
           const matchesName = this.searchName ? (control.UsuarioDato && control.UsuarioDato.nombre.toLowerCase().includes(this.searchName.toLowerCase())) : true;
           const matchesDate = this.searchDate ? control.fecha.substring(0, 10) === this.searchDate.substring(0, 10) : true;
-          const matchesVaciado = this.searchVaciado ? aditivo.hora_entrada.toLowerCase() === this.searchVaciado.toLowerCase() : true;
+          const controlHora = control.hora_entrada ? control.hora_entrada.substring(0, 5) : '';
+          const searchHora = this.searchVaciado ? this.searchVaciado.substring(0, 5) : '';
+          const matchesVaciado = this.searchVaciado ? controlHora === searchHora : true;
           return matchesName && matchesDate && matchesVaciado;
         });
       },
@@ -201,7 +203,7 @@
 
     },
     created() {
-        this.ConsultarAditivosVaciados();
+        this.ConsultarRegistros();
     },
 
     mounted() {

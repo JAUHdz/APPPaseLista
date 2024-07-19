@@ -1,6 +1,6 @@
 <template>
     <ion-page>
-      <toolbar-reutilizable-component :title="'Cemex'"/>
+      <toolbar-reutilizable-component :title="'Inicio'"/>
       <ion-content>
         
         <ion-card>

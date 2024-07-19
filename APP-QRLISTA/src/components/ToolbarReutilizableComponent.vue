@@ -4,7 +4,7 @@
             <ion-title color="primary">{{ title }}</ion-title>
             <ion-icon v-if="BackPath != null" slot="end" color="primary" class="CenterIcon" :icon="Icono" @click.prevent="redirectRegister(BackPath)"></ion-icon>
         </ion-toolbar>
-        <ion-progress-bar type="indeterminate"></ion-progress-bar>
+        
     </ion-header>
 </template>
 
