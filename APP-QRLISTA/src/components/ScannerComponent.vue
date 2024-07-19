@@ -1,13 +1,13 @@
 <template>
   <ion-page>
     <ion-header>
-      <toolbar-reutilizable-component :title="'Escanear aditivos'"/>
+      <toolbar-reutilizable-component :title="'Control Horario'"/>
     </ion-header>
     <ion-content>
       
       <ion-card>
         <ion-card-header>
-          <p class="text-center">Para comenzar a realizar las validaciones de los códigos QR has click en el boton flotante del scanner que se encuentra en la parte inferior derecha</p>
+          <p class="text-center">Para escánear los códigos QR has click en el boton flotante del scanner que se encuentra en la parte inferior derecha</p>
         </ion-card-header>
       </ion-card>
       
@@ -26,6 +26,7 @@
             </ion-row>
 
             <div style="height: 220px; overflow-y: auto;">
+              <p class="text-center">Escáne el código para registrar su entrada o salida</p>
               <ion-row  :class="('highlight')">
                 <ion-col>{{ qrCodes }}</ion-col>
               </ion-row>
@@ -34,14 +35,7 @@
             
           </ion-grid>
         </ion-card-content>
-        <ion-row class="custom-border-top"> 
-          <ion-col size="8" style="text-align: center;">
-            <p>Limpia la tabla de codigos QR</p>
-          </ion-col>
-          <ion-col size="4" class="Center-icons">
-            <ion-button color="danger" @click="vaciarArreglos">Limpiar</ion-button>
-          </ion-col>
-        </ion-row>
+        
       </ion-card>
 
       <ion-card>
@@ -89,6 +83,7 @@ const selectedArray = ref('array1');
 const ubicacion = ref(null);
 const ubicacionDetallada = ref('');
 let x=0;
+let idasignada=null;
 
 const Userlogin = localStorage.getItem('User-login');
 const Userid = JSON.parse(Userlogin);
@@ -179,15 +174,27 @@ const getCurrentDate = () => {
     }
 
 //Metodo para registrar en la entrada y salida 
+
 const controlHorario = () => {
   for (let z=0; z<2; z++){
+
+    const cid = localStorage.getItem('idControlHorario');
+    const conid = JSON.parse(cid);
+    console.log("id",conid.id);
+
+    if(conid.id==null){
+      x=0;
+    }else{
+      x=1;
+    }
+
     if(x==1){
       console.log("SALIDA");
-      metodop2();
+      metodop2(); 
       x=0;
       z=2;
     }
-    if(z==0){
+    if(x==0){
       x=x+1;
       console.log("ENTRADA");
       metodop();
@@ -225,9 +232,10 @@ const metodop = async () => {
     const result = await response.json();
     console.log('Respuesta del servidor:', result);
 
-    localStorage.setItem('idControlHorario', JSON.stringify(result.id));
+    localStorage.setItem('idControlHorario', JSON.stringify(result));
     localStorage.setItem('ControlHorario', JSON.stringify(data));
-    alert("Almacenado correctamente en la base de datos");
+    idasignada=1;
+    alert("Se ha registrado su entrada correctamente");
 
   } catch (error) {
     console.error('Error en la solicitud:', error);
@@ -235,25 +243,49 @@ const metodop = async () => {
   }
 }
 
-const metodop2 = ()=>{
+const metodop2 = async ()=>{
   console.log("Prueba2");
 
   const cid = localStorage.getItem('idControlHorario');
   const conid = JSON.parse(cid);
-  console.log(conid);
+  console.log("id",conid.id)
 
   const c = localStorage.getItem('ControlHorario');
   const con = JSON.parse(c);
-  console.log(con);
+  console.log("datos",con);
 
   const Salida = getCurrentTime();
   const datos = {
     id_usuario: con.id_usuario, // Reemplaza con el ID del usuario correspondiente
     fecha: con.fecha,
-    hora_entrada: con.horaEntrada,
+    hora_entrada: con.hora_entrada,
     hora_salida: Salida,
     localizacion: con.localizacion// Reemplaza con la localización correspondiente
   };
+  try {
+    const response = await fetch(`http://localhost:3000/api/controlhorario/actualizar/${conid.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datos)
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la solicitud');
+    }
+
+    const result = await response.json();
+    console.log('Respuesta del servidor:', result);
+
+    localStorage.removeItem('idControlHorario');
+    localStorage.removeItem('ControlHorario');
+    alert("Se ha registrado su hora de salida correctamente");
+
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    alert('Error en la solicitud:', error);
+  }
 }
 
 //Fetch para Post Aditivos
