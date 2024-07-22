@@ -13,7 +13,7 @@
       
       <ion-card>
         <ion-card-header>
-          <ion-card-title class="text-center">Validación de códigos</ion-card-title>
+          <ion-card-title class="text-center">Registros Entrada/Salida</ion-card-title>
         </ion-card-header>
         
         <ion-card-content style="height: 320px;">
@@ -83,7 +83,6 @@ const selectedArray = ref('array1');
 const ubicacion = ref(null);
 const ubicacionDetallada = ref('');
 let x=0;
-let idasignada=null;
 
 const Userlogin = localStorage.getItem('User-login');
 const Userid = JSON.parse(Userlogin);
@@ -179,13 +178,12 @@ const controlHorario = () => {
   for (let z=0; z<2; z++){
 
     const cid = localStorage.getItem('idControlHorario');
-    const conid = JSON.parse(cid);
-    console.log("id",conid.id);
+    const conid = cid ? JSON.parse(cid) : null;
 
-    if(conid.id==null){
-      x=0;
-    }else{
+      if (conid) {
       x=1;
+    } else {
+      x = 0;
     }
 
     if(x==1){
@@ -194,7 +192,7 @@ const controlHorario = () => {
       x=0;
       z=2;
     }
-    if(x==0){
+    if(x==0 && z<2){
       x=x+1;
       console.log("ENTRADA");
       metodop();
@@ -234,7 +232,6 @@ const metodop = async () => {
 
     localStorage.setItem('idControlHorario', JSON.stringify(result));
     localStorage.setItem('ControlHorario', JSON.stringify(data));
-    idasignada=1;
     alert("Se ha registrado su entrada correctamente");
 
   } catch (error) {

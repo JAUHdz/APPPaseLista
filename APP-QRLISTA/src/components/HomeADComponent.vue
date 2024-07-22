@@ -7,15 +7,15 @@
           <ion-card-header class="Center-Logo-Cemex">
               <ion-card-title>Bienvenido administrador {{ UserName }}  </ion-card-title>
               <br>
-              <ion-card-subtitle>Nos alegra verte, ¿Qué le gustaría hacer hoy?</ion-card-subtitle>
+              <ion-card-subtitle>Nos alegra verte</ion-card-subtitle>
           </ion-card-header>
           
           <ion-card-content>
             <div class="Center-Logo-Cemex">
-              <ion-img src="/Cemex_log.png" style="max-width: 300px; height: auto; margin-bottom: 10px;"></ion-img>
+              <ion-icon style="width: 90px; height: 90px;" color="primary" :icon="watchOutline"></ion-icon>
             </div>
 
-              <p style="font-size: 16px; margin-top: 10px; text-align: center; ">Recuerda un gran poder con lleva una gran responsabilidad</p>
+              <p style="font-size: 16px; margin-top: 10px; text-align: center; ">¿Qué le gustaría hacer hoy?</p>
           </ion-card-content>
         </ion-card>
 
@@ -28,11 +28,11 @@
   </template>
   
   <script>
-  import { IonPage, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonImg } from '@ionic/vue';
+  import { IonPage, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonImg, IonIcon } from '@ionic/vue';
   import ToolbarReutilizableComponent from '../components/ToolbarReutilizableComponent.vue'
   import CardReutilizableComponent from '../components/CardReutilizableComponent.vue'
   
-  import { personAddOutline, listOutline, lockClosedOutline, callOutline} from 'ionicons/icons';
+  import { personAddOutline, listOutline, lockClosedOutline, callOutline, watchOutline} from 'ionicons/icons';
   export default {
     name: 'HomeAdComponent',
     components: {
@@ -46,6 +46,7 @@
       IonImg,
       CardReutilizableComponent,
       ToolbarReutilizableComponent,
+      IonIcon
     },
     data() {
       return {
@@ -72,6 +73,7 @@
         listOutline,
         lockClosedOutline,
         callOutline,
+        watchOutline
       }
     },
     methods: {
