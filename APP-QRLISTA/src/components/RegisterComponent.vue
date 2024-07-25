@@ -1,7 +1,7 @@
 <template>
     <ion-page>
         <ion-content>
-            <ion-img src="/DRegister.png"></ion-img>
+            <ion-img src="/HdLogin.png"></ion-img>
             <div class="container">
                 <ion-label class="register"><b>REGISTRO</b></ion-label>
                 <div class="separation">
@@ -32,15 +32,18 @@
                         </ion-select>
                     </ion-item>
                 </div>
-                <ion-button @click="register" fill="solid" style="margin-top:50px; margin-bottom:50px">Registrar</ion-button>
-                <ion-button  color="danger" @click="salir">Cancelar</ion-button>
+                <div class="button-container">
+                    <ion-button @click="register" fill="solid" class="blue-button" style="margin-right: 20px;">Registrar</ion-button>
+                    <ion-button color="danger" @click="salir">Cancelar</ion-button>
+                </div>
             </div>
-            <ion-alert         
-            :is-open="showAlert"
-            :header="alertHeader"
-            :message="alertMessage"
-            :buttons="alertButtons"
-            @didDismiss="showAlert = false">
+
+            <ion-alert
+                :is-open="showAlert"
+                :header="alertHeader"
+                :message="alertMessage"
+                :buttons="alertButtons"
+                @didDismiss="showAlert = false">
             </ion-alert>
         </ion-content>
     </ion-page>
@@ -146,7 +149,6 @@ export default {
 };
 </script>
 
-
 <style>
 .container {
     display: flex;
@@ -180,5 +182,14 @@ export default {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px !important;
+    justify-content: center;
+    margin-bottom: 70px;
+    width: 100%;
 }
 </style>

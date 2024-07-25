@@ -16,7 +16,7 @@
                   </ion-input>
             </div>
             <div style="margin: 20px;">
-              <ion-button id="open-loading" @click="login" fill="solid" class="login-button">Login</ion-button>
+              <ion-button id="open-loading" @click="login" fill="solid" class="blue-button">Login</ion-button>
               <ion-loading :is-open="loading" message="Cargando..." spinner="circles"></ion-loading>
             </div>
         <footer class="footer">
