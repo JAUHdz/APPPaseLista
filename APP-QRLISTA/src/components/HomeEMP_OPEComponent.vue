@@ -1,111 +1,136 @@
 <template>
-    <ion-page>
-      <toolbar-reutilizable-component :title="'Inicio'"/>
-      <ion-content>
-       
-        <div style="background-color: red; color:red;">.</div>
-       <ion-card class="cont-center">
-              <ion-card-title style="margin-top: 10px;">Bienvenido {{ TypeUser }} {{ UserName }} </ion-card-title>
-              <h5>Nos alegra verte</h5>
-              <ion-img src="/Cemex_log.png" style="max-width: 250px; height: auto; margin-bottom: 10px; margin-top: 10px;"></ion-img>
-         <ion-card-content>
-            <p style="font-size: 16px; margin-top: 10px;">Puede comenzar a realizar las validaciones con el escáner de codigos QR</p>
-            <p style="font-size: 16px; margin-top: 10px;">Esperamos la aplicacion de una experencia positiva a la hora de realizar el trabajo</p>
-            </ion-card-content>
-        </ion-card>
-        <div style="background-color: blue; color:blue;">.</div>
-   
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Escáner</ion-card-title>
-            <ion-card-subtitle>Validación de vaciado de aditivos en tanqués</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <p>La validación se realiza seleccionando la parte a escanear ya sea el aditivo  o el tanque, la aplicación mostrara en una tabla si la validacion es correcta con un color azul o incorrecta con un color rojo</p>
-          </ion-card-content>
-        </ion-card>
+  <ion-page>
+    <toolbar-reutilizable-component :title="'Inicio'"/>
+    <ion-content>
+      <ion-card class="welcome-card">
+        <ion-icon :icon="personCircleOutline" class="welcome-icon" />
+        <ion-card-title>Bienvenido {{ TypeUser }} {{ UserName }} </ion-card-title>
+        <ion-card-content>
+          <p class="welcome-text">Nos alegra verte</p>
+          <p class="welcome-text">Esperamos que la aplicación te brinde una experiencia positiva a la hora de realizar tu trabajo</p>
+        </ion-card-content>
+      </ion-card>
 
-        <card-reutilizable-component :title="titleCard3" :subtitle="subtitleCard3" :textUno="textUnoCard3" :textDos="textDosCard3" :IconoUno="lockClosedOutline" :IconoDos="callOutline"/>
+      <ion-card class="control-card">
+        <ion-card-header>
+          <ion-icon :icon="timeOutline" slot="start" class="card-icon" />
+          <ion-card-title>Control Horario</ion-card-title>
+          <ion-card-subtitle>Registro de entradas y salidas</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="detailed-description">Utilice el escáner de códigos QR para registrar su entrada y salida de manera eficiente. Este sistema le permite llevar un control preciso de sus horarios de trabajo, garantizando que todos los registros sean exactos y accesibles en tiempo real. Recuerde escanear al entrar y al salir para mantener su horario actualizado.</p>
+          <ion-icon :icon="calendarOutline" class="control-icon" />
+        </ion-card-content>
+      </ion-card>
 
-      </ion-content>
-    </ion-page>
-  </template>
-  
-  <script>
-  import { IonPage, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonImg} from '@ionic/vue';
-  import ToolbarReutilizableComponent from '../components/ToolbarReutilizableComponent.vue'
-  import CardReutilizableComponent from '../components/CardReutilizableComponent.vue'
-  
-  import {lockClosedOutline, callOutline} from 'ionicons/icons';
-  export default {
-    name: 'HomeAdComponent',
-    components: {
-      IonPage,
-      IonContent,
-      IonCard,
-      IonCardHeader,
-      IonCardSubtitle,
-      IonCardTitle, 
-      IonCardContent,
-      IonImg,
-      ToolbarReutilizableComponent,
-      CardReutilizableComponent
-    },
-    data() {
-      return {  
-        titleCard3: "Gestionar cuenta",
-        subtitleCard3: "Administra tu informacion y datos personales para un mejor inicio de sesion",
-        textUnoCard3: "Cambiar Contraseña?",
-        textDosCard3: "Agregar numero de telefono?",
+    </ion-content>
+  </ion-page>
+</template>
 
-        UserName:"",
-        TypeUser:"",
-      }
-    },
-    setup() {
-      return {
-        lockClosedOutline,
-        callOutline,
-      }
-    },
-    methods: {
-      getNameUserLogin (){
-        try {
-          const User = localStorage.getItem('User-login');
-          if (User) {
-            const NameUser = JSON.parse(User);
-            this.UserName = NameUser.nombre; 
-            this.idUser= NameUser.id_usu_tipo; 
-                if(NameUser.id_usu_tipo==2){
-                    this.TypeUser= "EMPLEADO"; 
-                }/*else if(NameUser.idusucattipousuario==3){
-                    this.TypeUser= "OPERADOR";
-                }*/
-           // console.log("Datos obtenidos correctamente");
-          } else {
-            //console.log("Vuelva iniciar sesion para evitar cualquier error con la sesion iniciada");
-            window.location.href = '/login'; 
-          }   
-        } catch {
-         // console.log("Hubo un error al obtener los datos de la sesion");
+<script>
+import { IonPage, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonIcon } from '@ionic/vue';
+import ToolbarReutilizableComponent from '../components/ToolbarReutilizableComponent.vue';
+import { timeOutline, personCircleOutline, calendarOutline } from 'ionicons/icons';
+
+export default {
+  name: 'HomeAdComponent',
+  components: {
+    IonPage,
+    IonContent,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle, 
+    IonCardContent,
+    IonIcon,
+    ToolbarReutilizableComponent
+  },
+  data() {
+    return {  
+      UserName: "",
+      TypeUser: ""
+    }
+  },
+  setup() {
+    return {
+      timeOutline,
+      personCircleOutline,
+      calendarOutline
+    }
+  },
+  methods: {
+    getNameUserLogin() {
+      try {
+        const User = localStorage.getItem('User-login');
+        if (User) {
+          const NameUser = JSON.parse(User);
+          this.UserName = NameUser.nombre; 
+          this.idUser = NameUser.id_usu_tipo; 
+          if (NameUser.id_usu_tipo == 2) {
+            this.TypeUser = "EMPLEADO"; 
+          }
+        } else {
           window.location.href = '/login'; 
-        }
+        }   
+      } catch {
+        window.location.href = '/login'; 
       }
-    },
-    mounted() {
-      this.getNameUserLogin();
-    },
+    }
+  },
+  mounted() {
+    this.getNameUserLogin();
   }
-  </script>
+}
+</script>
 
-  <style>
-    .cont-center{
+<style>
+.welcome-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50%;
+  text-align: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: #f0f8ff;
+  border-radius: 10px;
 }
 
-  </style>
-  
+.welcome-icon {
+  font-size: 50px;
+  color: #4CAF50;
+  margin-bottom: 10px;
+}
+
+.welcome-text {
+  font-size: 16px;
+  margin-top: 10px;
+  color: #555;
+}
+
+.control-card {
+  margin: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.card-icon {
+  font-size: 30px;
+  color: #007BFF;
+  margin-right: 10px;
+}
+
+.detailed-description {
+  font-size: 16px;
+  margin-top: 10px;
+  color: #555;
+}
+
+.control-icon {
+  display: block;
+  font-size: 50px;
+  color: #007BFF;
+  margin: 20px auto;
+}
+</style>

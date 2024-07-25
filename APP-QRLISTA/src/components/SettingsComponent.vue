@@ -16,21 +16,6 @@
                     <div class="divider"></div> 
                 </div>
                 <div>
-                    <ion-item aria-hidden="true" :icon="createOutline" routerLink="/editprofile" lines="none" v-if="permisosAdmin">
-                        <ion-icon :icon="createOutline" class="icon-style"></ion-icon>
-                        <ion-label>Editar Perfil</ion-label>
-                        <ion-icon slot="end" :icon="chevronForwardOutline"></ion-icon>
-                    </ion-item>
-                    <ion-item aria-hidden="true" routerLink="/changepassword" lines="none" v-if="permisosAdmin">
-                        <ion-icon :icon="lockOpenOutline" class="icon-style"></ion-icon>
-                        <ion-label>Cambiar Contraseña</ion-label>
-                        <ion-icon slot="end" :icon="chevronForwardOutline"></ion-icon>
-                    </ion-item>
-                    <ion-item aria-hidden="true" routerLink="/deleteaccount" lines="none" v-if="permisosAdmin">
-                        <ion-icon :icon="closeCircleOutline" class="icon-style"></ion-icon>
-                        <ion-label>Eliminar cuenta</ion-label>
-                        <ion-icon slot="end" :icon="chevronForwardOutline"></ion-icon>
-                    </ion-item>
                     <ion-item aria-hidden="true" @click="logout" routerLink="/login" lines="none">
                         <ion-icon color="danger" :icon="logOutOutline" class="icon-style"></ion-icon>
                         <ion-label>Cerrar Sesion</ion-label>
@@ -59,17 +44,6 @@ export default {
 
     },
     setup() {
-
-        const TypeUserPermissions = localStorage.getItem('User-login');
-        const parsedPermissions = JSON.parse(TypeUserPermissions);
-        const permisosAdmin = ref(null);
-
-        if (parsedPermissions.idusucattipousuario === 2 || parsedPermissions.idusucattipousuario === 3) {
-          permisosAdmin.value = false;
-        } else {
-          permisosAdmin.value = true;
-        }
-
         return {
             personOutline,
             lockOpenOutline,
@@ -77,12 +51,13 @@ export default {
             closeCircleOutline,
             chevronForwardOutline,
             logOutOutline,
-            permisosAdmin
         };
     },
     methods:{
         logout(){
             localStorage.removeItem('User-login'); 
+            console.log("Sesión cerrada");
+            window.location.href = '/login';
         },
         userlogin(){
             const User = localStorage.getItem('User-login');

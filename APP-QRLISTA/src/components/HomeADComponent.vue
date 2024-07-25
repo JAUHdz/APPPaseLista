@@ -1,114 +1,145 @@
 <template>
-    <ion-page>
-      <toolbar-reutilizable-component :title="'Inicio'"/>
-      <ion-content>
-        
-        <ion-card>
-          <ion-card-header class="Center-Logo-Cemex">
-              <ion-card-title>Bienvenido administrador {{ UserName }}  </ion-card-title>
-              <br>
-              <ion-card-subtitle>Nos alegra verte</ion-card-subtitle>
-          </ion-card-header>
-          
-          <ion-card-content>
-            <div class="Center-Logo-Cemex">
-              <ion-icon style="width: 90px; height: 90px;" color="primary" :icon="watchOutline"></ion-icon>
-            </div>
+  <ion-page>
+    <toolbar-reutilizable-component :title="'Inicio'"/>
+    <ion-content>
 
-              <p style="font-size: 16px; margin-top: 10px; text-align: center; ">¿Qué le gustaría hacer hoy?</p>
-          </ion-card-content>
-        </ion-card>
+      <ion-card class="welcome-card">
+        <ion-card-header>
+          <ion-card-title>Bienvenido administrador {{ UserName }}</ion-card-title>
+          <ion-card-subtitle>Nos alegra verte</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="center-content">
+          <ion-icon :icon="watchOutline" class="welcome-icon"></ion-icon>
+          <p class="welcome-text">¿Qué le gustaría hacer hoy?</p>
+        </ion-card-content>
+      </ion-card>
 
-        <card-reutilizable-component :title="titleCard1" :subtitle="subtitleCard1" :RutaOne="'/register'" :RutaDos="'/board'" :textUno="textUnoCard1" :textDos="textDosCard1" :IconoUno="personAddOutline" :IconoDos="listOutline"/>
-        <card-reutilizable-component :title="titleCard2" :subtitle="subtitleCard2" :RutaOne="'/boardaditivos'" :textUno="textUnoCard2" :IconoUno="listOutline"/>
-        <card-reutilizable-component :title="titleCard3" :subtitle="subtitleCard3" :textUno="textUnoCard3" :textDos="textDosCard3" :IconoUno="lockClosedOutline" :IconoDos="callOutline"/>
+      <ion-card class="action-card">
+        <ion-card-header @click="rutausuarios">
+          <ion-icon :icon="personAddOutline" class="card-icon" />
+          <ion-card-title>Manejo y administración de usuarios</ion-card-title>
+          <ion-card-subtitle>Administra y gestiona la información de los usuarios de manera eficiente</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="card-text">Esta herramienta le permite crear nuevas cuentas de usuario, consultar usuarios existentes y actualizar la información necesaria para un manejo adecuado del personal.</p>
+        </ion-card-content>
+      </ion-card>
 
-      </ion-content>
-    </ion-page>
-  </template>
-  
-  <script>
-  import { IonPage, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonImg, IonIcon } from '@ionic/vue';
-  import ToolbarReutilizableComponent from '../components/ToolbarReutilizableComponent.vue'
-  import CardReutilizableComponent from '../components/CardReutilizableComponent.vue'
-  
-  import { personAddOutline, listOutline, lockClosedOutline, callOutline, watchOutline} from 'ionicons/icons';
-  export default {
-    name: 'HomeAdComponent',
-    components: {
-      IonPage,
-      IonContent,
-      IonCard,
-      IonCardHeader,
-      IonCardSubtitle,
-      IonCardTitle, 
-      IonCardContent,
-      IonImg,
-      CardReutilizableComponent,
-      ToolbarReutilizableComponent,
-      IonIcon
-    },
-    data() {
-      return {
-        titleCard1: "Manejo y administracion de usuarios",
-        subtitleCard1: "Esta herramienta nos permite administrar mejor la informacion de nuestros usuarios",
-        textUnoCard1: "Crear nueva cuenta?",
-        textDosCard1: "Consultar usuarios existentes?",
+      <ion-card class="action-card">
+        <ion-card-header @click="rutacontrolh">
+          <ion-icon :icon="listOutline" class="card-icon" />
+          <ion-card-title>Consultar Registros</ion-card-title>
+          <ion-card-subtitle>Consulta y verifica los horarios de entrada y salida de los empleados</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="card-text">Acceda a los registros de horarios para asegurarse de que todos los empleados cumplen con sus jornadas laborales. Esta función permite revisar y validar el control de asistencia de manera precisa y rápida.</p>
+        </ion-card-content>
+      </ion-card>
 
-        titleCard2: "Consultar Registros",
-        subtitleCard2: "Consultas sobre el horario de entrada y salida de los usarios",
-        textUnoCard2: "Consultar horarios?",
-        
-        titleCard3: "Gestionar cuenta",
-        subtitleCard3: "Administra tu informacion y datos personales para un mejor inicio de sesion",
-        textUnoCard3: "Cambiar Contraseña?",
-        textDosCard3: "Agregar numero de telefono?",
+    </ion-content>
+  </ion-page>
+</template>
 
-        UserName:"",
-      }
-    },
-    setup() {
-      return {
-        personAddOutline,
-        listOutline,
-        lockClosedOutline,
-        callOutline,
-        watchOutline
-      }
-    },
-    methods: {
-      getNameUserLogin (){
-        try {
-          const User = localStorage.getItem('User-login');
-          if (User) {
-            const NameUser = JSON.parse(User);
-            this.UserName = NameUser.nombre;  
-            console.log("Datos obtenidos correctamente");
-          } else {
-            console.log("Vuelvaa iniciar sesion para evitar cualquier error con la sesion iniciada");
-            window.location.href = '/login'; 
-          }   
-        } catch {
-          console.log("Hubo un error al obtener los datos de la sesion");
+<script>
+import { IonPage, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonIcon } from '@ionic/vue';
+import ToolbarReutilizableComponent from '../components/ToolbarReutilizableComponent.vue';
+import { personAddOutline, listOutline, watchOutline } from 'ionicons/icons';
+
+export default {
+  name: 'HomeAdminComponent',
+  components: {
+    IonPage,
+    IonContent,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle, 
+    IonCardContent,
+    IonIcon,
+    ToolbarReutilizableComponent
+  },
+  data() {
+    return {  
+      UserName: ""
+    }
+  },
+  setup() {
+    return {
+      personAddOutline,
+      listOutline,
+      watchOutline
+    }
+  },
+  methods: {
+    getNameUserLogin() {
+      try {
+        const User = localStorage.getItem('User-login');
+        if (User) {
+          const NameUser = JSON.parse(User);
+          this.UserName = NameUser.nombre;  
+        } else {
           window.location.href = '/login'; 
-        }
+        }   
+      } catch {
+        window.location.href = '/login'; 
       }
     },
-    mounted() {
-      this.getNameUserLogin();
+    rutacontrolh(){
+      this.$router.push("/boardaditivos");
     },
-    
-
+    rutausuarios(){
+      this.$router.push("/board");
+    },
+  },
+  mounted() {
+    this.getNameUserLogin();
   }
-  </script>
+}
+</script>
 
 <style>
+.welcome-card {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f0f8ff;
+  border-radius: 10px;
+  text-align: center;
+}
 
-.Center-Logo-Cemex{
+.welcome-icon {
+  font-size: 90px;
+  color: #007BFF;
+  margin-bottom: 10px;
+}
+
+.welcome-text {
+  font-size: 16px;
+  color: #555;
+}
+
+.center-content {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.action-card {
+  margin: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.card-icon {
+  font-size: 50px;
+  color: #007BFF;
+  margin-right: 10px;
+}
+
+.card-text {
+  font-size: 16px;
+  color: #555;
+  margin-top: 10px;
+}
 </style>
-  

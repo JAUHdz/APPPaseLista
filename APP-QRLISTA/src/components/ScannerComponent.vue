@@ -27,9 +27,6 @@
 
             <div style="height: 220px; overflow-y: auto;">
               <p class="text-center">Escáne el código para registrar su entrada o salida</p>
-              <ion-row  :class="('highlight')">
-                <ion-col>{{ qrCodes }}</ion-col>
-              </ion-row>
             </div>
 
             
@@ -187,16 +184,27 @@ const controlHorario = () => {
     }
 
     if(x==1){
-      console.log("SALIDA");
-      metodop2(); 
-      x=0;
-      z=2;
+      if(qrCodes.value=="SALIDA"){
+        console.log("SALIDA");
+        metodop2(); 
+        x=0;
+        z=2;
+      }else{
+        alert("No se escaneo el código QR Adecuado para la salida, escane el correcto por favor");
+        z=2;
+      }
     }
+
     if(x==0 && z<2){
-      x=x+1;
-      console.log("ENTRADA");
-      metodop();
-      z=2;
+      if(qrCodes.value=="ENTRADA"){
+        x=x+1;
+        console.log("ENTRADA");
+        metodop();
+        z=2;
+      }else{
+        alert("No se escaneo el código QR Adecuado para la entrada, escane el correcto por favor");
+        z=2;
+      }
     }
   }
 }
