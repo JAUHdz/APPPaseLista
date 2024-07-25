@@ -21,7 +21,7 @@
             </div>
         <footer class="footer">
           <div class="imagefooter">
-              <img src="/FLogin2.png" alt="Descripción de la imagen" class="full-width-image">
+              <img src="/FLogin3.png" alt="Descripción de la imagen" class="full-width-image">
           </div>
       </footer>
           </div>
