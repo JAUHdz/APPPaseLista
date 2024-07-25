@@ -50,5 +50,14 @@ ion-button[color="blue"] {
   color: var(--ion-color-primary-contrast);
 }
 
+.login-button {
+  --background: #4CC4EA;
+  --background-activated: #4CC4EA;
+  --background-focused: #4CC4EA;
+  --background-hover: #4CC4EA;
+}
+
+
+
 
 

@@ -4,7 +4,7 @@
       <ion-content>
           <div class="centrado content">
               <div class="margen100" >
-                <ion-img src="/usuario.png" class="image-user"></ion-img>
+                <ion-img src="/User2.png" class="image-user"></ion-img>
             </div>
           
             <div class="inputs">
@@ -12,20 +12,16 @@
                   <ion-input class="item-inputs" v-model="username" fill="outline" placeholder="Ej: Admin"></ion-input>
                   <ion-label>Password</ion-label>
                   <ion-input class="item-inputs" v-model="password"   type="password" fill="outline" placeholder="Ej: ashnoias">
-                    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+                    <ion-input-password-toggle slot="end" ></ion-input-password-toggle>
                   </ion-input>
             </div>
             <div style="margin: 20px;">
-              <ion-button id="open-loading" @click="login" fill="solid">Login</ion-button>
+              <ion-button id="open-loading" @click="login" fill="solid" class="login-button">Login</ion-button>
               <ion-loading :is-open="loading" message="Cargando..." spinner="circles"></ion-loading>
             </div>
-            <div style="margin-top: 70px;">
-              <a style="text-decoration: none;" href="">Cemex</a>
-            </div>
-
         <footer class="footer">
           <div class="imagefooter">
-              <img src="/DLogin.png" alt="Descripción de la imagen" class="full-width-image">
+              <img src="/FLogin.png" alt="Descripción de la imagen" class="full-width-image">
           </div>
       </footer>
           </div>
@@ -134,8 +130,8 @@ created() {
   
   <style>
     .image-user{
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
     }
     .inputs{
       margin-top: 50px;
@@ -178,6 +174,5 @@ created() {
     width: 100%;             /* Hace que la imagen ocupe el 100% del ancho del contenedor */
     height: 80px;            /* Mantiene las proporciones de la imagen */
 }
-
    
   </style>
