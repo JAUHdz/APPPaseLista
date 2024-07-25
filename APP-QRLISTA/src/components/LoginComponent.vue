@@ -145,7 +145,7 @@ created() {
       max-width: 300px;
     }
     .margen100{
-      margin-top: 100px;
+      margin-top: 80px;
     }
     .item-inputs{
       margin-top: 20px;
