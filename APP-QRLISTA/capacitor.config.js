@@ -1,6 +1,6 @@
 const config = {
   appId: 'io.ionic.starter',
-  appName: 'Cemex',
+  appName: 'APPQR',
   webDir: 'dist'
 };
 

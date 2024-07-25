@@ -55,9 +55,9 @@
         textUnoCard1: "Crear nueva cuenta?",
         textDosCard1: "Consultar usuarios existentes?",
 
-        titleCard2: "Consultar aditivos vaciados o contenedores",
-        subtitleCard2: "Consultas sobre aditivos vaciados en contenedores",
-        textUnoCard2: "Consultar aditivos vaciados?",
+        titleCard2: "Consultar Registros",
+        subtitleCard2: "Consultas sobre el horario de entrada y salida de los usarios",
+        textUnoCard2: "Consultar horarios?",
         
         titleCard3: "Gestionar cuenta",
         subtitleCard3: "Administra tu informacion y datos personales para un mejor inicio de sesion",

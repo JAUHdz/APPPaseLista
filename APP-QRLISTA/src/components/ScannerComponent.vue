@@ -241,8 +241,6 @@ const metodop = async () => {
 }
 
 const metodop2 = async ()=>{
-  console.log("Prueba2");
-
   const cid = localStorage.getItem('idControlHorario');
   const conid = JSON.parse(cid);
   console.log("id",conid.id)

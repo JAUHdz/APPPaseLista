@@ -155,11 +155,11 @@
         await fetch(`http://localhost:3000/api/controlhorario/eliminar/${id_c}`, {
         method: 'DELETE'
         });
-        console.log('Registro eliminado correctamente', id_c)
+        alert('Registro eliminado correctamente')
         this.deletealert= false;
         this.ConsultarRegistros();
       } catch (error) {
-        console.error("Error al eliminar el Registro:", error);
+        alert("Error al eliminar el Registro:");
         this.deletealert= false;
       }
     },
