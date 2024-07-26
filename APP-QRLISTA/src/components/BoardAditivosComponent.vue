@@ -12,14 +12,16 @@
               </ion-col>
             </ion-row>
             <ion-row style="margin-bottom: 15px">
-              <ion-col>
+              <ion-col  style="display: flex; align-items: center;">
                 <ion-input placeholder="Nombre" v-model="searchName"></ion-input>
               </ion-col>
-              <ion-col>
-                <ion-input type="time" laceholder="Vaciado" v-model="searchVaciado"></ion-input>
+              <ion-col  style="display: flex; flex-direction: row; align-items: center;">
+                <ion-icon color="primary" :icon="timer"></ion-icon>
+                <ion-input type="time" v-model="searchVaciado"></ion-input>
               </ion-col>
-              <ion-col>
-                <ion-input  type="date" placeholder="Fecha" v-model="searchDate"></ion-input>
+              <ion-col style="display: flex; flex-direction: row; align-items: center;">
+                <ion-icon  color="primary" :icon="calendar"></ion-icon>
+                <ion-input  type="date"  v-model="searchDate"></ion-input>
               </ion-col>
             </ion-row>
             <ion-row>
@@ -37,7 +39,7 @@
 
             <ion-row v-else v-for="control in paginatedControl" :key="control.id_aditivos" class="table-space">
                 <ion-col class="pagination-text">{{ control.UsuarioDato ? control.UsuarioDato.nombre : 'N/A' }}</ion-col>
-                <ion-col class="pagination-text">{{ control.fecha }}</ion-col>
+                <ion-col class="pagination-text">{{  control.fecha.substring(0, 10) }}</ion-col>
                 <ion-col class="pagination-text">{{ control.hora_entrada }}</ion-col>
                 <ion-col class="pagination-text">{{ control.hora_salida }}</ion-col>
                 <ion-col class="pagination-text">{{ control.localizacion }}</ion-col>
@@ -66,7 +68,7 @@
   <script>
   import { IonPage, IonContent, IonCard, IonGrid, IonCol, IonRow, IonIcon, IonInput } from '@ionic/vue';
   import { ScreenOrientation } from '@capacitor/screen-orientation';
-  import { createOutline, trashOutline, chevronBackOutline, chevronForwardOutline, arrowBackOutline} from 'ionicons/icons';
+  import { createOutline, trashOutline, chevronBackOutline, chevronForwardOutline, arrowBackOutline, timer, calendar} from 'ionicons/icons';
   
   export default {
     name: 'BoardAditivosComponent',
@@ -99,13 +101,15 @@
         trashOutline,
         chevronBackOutline,
         chevronForwardOutline,
-        arrowBackOutline
+        arrowBackOutline,
+        timer,
+        calendar
       }
     },
     methods: {
       async ConsultarRegistros() {
             try {
-                const responseAditivos = await fetch('http://localhost:3000/api/controlhorario/consulta');
+                const responseAditivos = await fetch('https://apicontrolhorario.onrender.com/api/controlhorario/consulta');
                 this.controlTabla = await responseAditivos.json();
                 console.log("Consulta exitosa de aditivos");
             } catch (error) {
@@ -113,7 +117,7 @@
             }
   
             try {
-                const responseUsuarios = await fetch('http://localhost:3000/api/usuusuarios/consulta');
+                const responseUsuarios = await fetch('https://apicontrolhorario.onrender.com/api/usuusuarios/consulta');
                 this.usuarioTabla = await responseUsuarios.json();
                 console.log("Consulta exitosa de usuarios");
             } catch (error) {
@@ -152,7 +156,7 @@
 
       async DeleteGetId(id_c) {
       try {
-        await fetch(`http://localhost:3000/api/controlhorario/eliminar/${id_c}`, {
+        await fetch(`https://apicontrolhorario.onrender.com/api/controlhorario/eliminar/${id_c}`, {
         method: 'DELETE'
         });
         alert('Registro eliminado correctamente')

@@ -206,7 +206,7 @@ export default {
 
     async ConsultasDatos() {
       try {
-        const responseUsuarios = await fetch('http://localhost:3000/api/usuusuarios/consulta');
+        const responseUsuarios = await fetch('https://apicontrolhorario.onrender.com/api/usuusuarios/consulta');
         this.usuarioTabla = await responseUsuarios.json();
         console.log("Consulta exitosa");
       } catch (error) {
@@ -214,7 +214,7 @@ export default {
       }
 
       try {
-        const responseTipo = await fetch('http://localhost:3000/api/tipousuarios/consulta');
+        const responseTipo = await fetch('https://apicontrolhorario.onrender.com/api/tipousuarios/consulta');
         this.tipoTabla = await responseTipo.json();
         console.log("Consulta exitosa");
       } catch (error) {
@@ -222,7 +222,7 @@ export default {
       }
 
       try {
-        const responseEstado = await fetch('http://localhost:3000/api/estadousuarios/consulta');
+        const responseEstado = await fetch('https://apicontrolhorario.onrender.com/api/estadousuarios/consulta');
         this.estadoTabla = await responseEstado.json();
         console.log("Consulta exitosa");
       } catch (error) {
@@ -249,7 +249,7 @@ export default {
     
     async DeleteGetId(id_user) {
       try {
-        await fetch(`http://localhost:3000/api/usuusuarios/eliminar/${id_user}`, {
+        await fetch(`https://apicontrolhorario.onrender.com/api/usuusuarios/eliminar/${id_user}`, {
         method: 'DELETE'
         });
         console.log('Usuario eliminado correctamente', id_user)

@@ -6,16 +6,16 @@
                 <ion-label class="register"><b>REGISTRO</b></ion-label>
                 <div class="separation">
                     <ion-label>Nombre</ion-label>
-                    <ion-input v-model="nombre" label-placement="floating" fill="outline" class="spacing" maxlength="10"></ion-input>
+                    <ion-input v-model="nombre" label-placement="floating" fill="outline" class="spacing" maxlength="30"></ion-input>
                     <ion-label>Apellido Paterno</ion-label>
-                    <ion-input v-model="apellidop" label-placement="floating" fill="outline" class="spacing" maxlength="10"></ion-input>
+                    <ion-input v-model="apellidop" label-placement="floating" fill="outline" class="spacing" maxlength="20"></ion-input>
                     <ion-label>Apellido Materno</ion-label>
-                    <ion-input v-model="apellidom" label-placement="floating" fill="outline" class="spacing" maxlength="10"></ion-input>
+                    <ion-input v-model="apellidom" label-placement="floating" fill="outline" class="spacing" maxlength="20"></ion-input>
                     <ion-label>Nombre de Usuario</ion-label>
                     <ion-input v-model="username" label-placement="floating" fill="outline" class="spacing" maxlength="10"></ion-input>
                     <ion-label>Contraseña</ion-label>
                     <ion-input v-model="password" label-placement="floating" fill="outline" type="password" class="spacing" maxlength="9" pattern="[a-zA-Z0-9]+">
-                        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+                        <ion-input-password-toggle slot="end"></ion-input-password-toggle>  
                     </ion-input>
                     <ion-label>Estado</ion-label>
                     <ion-item class="spacing">
@@ -90,7 +90,7 @@ export default {
                     return;
                 }
 
-                const responseCheckUser = await fetch(`http://localhost:3000/api/usuusuarios/consulta`);
+                const responseCheckUser = await fetch(`https://apicontrolhorario.onrender.com/api/usuusuarios/consulta`);
                 if (!responseCheckUser.ok) {
                     this.showAlertDR('Error al verificar el usuario');
                     return;
@@ -103,7 +103,7 @@ export default {
                     return;
                 }
 
-                const registerReply = await fetch('http://localhost:3000/api/usuusuarios/crear', {
+                const registerReply = await fetch('https://apicontrolhorario.onrender.com/api/usuusuarios/crear', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

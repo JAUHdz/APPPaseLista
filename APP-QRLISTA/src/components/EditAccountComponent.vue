@@ -10,13 +10,13 @@
         <div class="container">
             <div class="separation">
                 <ion-label>Nombre</ion-label>
-                <ion-input v-model="nombre" label-placement="floating" fill="outline" class="spacing" maxlength="10" :value="username"></ion-input>
+                <ion-input v-model="nombre" label-placement="floating" fill="outline" class="spacing" maxlength="30" :value="username"></ion-input>
 
                 <ion-label>Apellido Paterno</ion-label>
-                <ion-input v-model="apellp" label-placement="floating" fill="outline" class="spacing" maxlength="10" :value="username"></ion-input>
+                <ion-input v-model="apellp" label-placement="floating" fill="outline" class="spacing" maxlength="20" :value="username"></ion-input>
 
                 <ion-label>Apellido Materno</ion-label>
-                <ion-input v-model="apellm" label-placement="floating" fill="outline" class="spacing" maxlength="10" :value="username"></ion-input>
+                <ion-input v-model="apellm" label-placement="floating" fill="outline" class="spacing" maxlength="20" :value="username"></ion-input>
 
                 <ion-label>Usuario</ion-label>
                 <ion-input v-model="username" label-placement="floating" fill="outline" class="spacing" maxlength="10" :value="username"></ion-input>
@@ -104,7 +104,7 @@ export default {
                 this.IdUserEdit = JSON.parse(id_user_edit);
                 console.log(this.IdUserEdit);
 
-                const responseUsuarios = await fetch(`http://localhost:3000/api/usuusuarios/consulta/${this.IdUserEdit}`);
+                const responseUsuarios = await fetch(`https://apicontrolhorario.onrender.com/api/usuusuarios/consulta/${this.IdUserEdit}`);
                 this.DataUser = await responseUsuarios.json();
                 console.log("Consulta exitosa");
             } catch (error) {
@@ -112,7 +112,7 @@ export default {
             }
 
             try {
-                const responseTipo = await fetch('http://localhost:3000/api/tipousuarios/consulta');
+                const responseTipo = await fetch('https://apicontrolhorario.onrender.com/api/tipousuarios/consulta');
                 this.TypeData = await responseTipo.json();
                 console.log("Consulta exitosa");
             } catch (error) {
@@ -120,7 +120,7 @@ export default {
             }          
             
             try {
-                const responseEstado = await fetch('http://localhost:3000/api/estadousuarios/consulta');
+                const responseEstado = await fetch('https://apicontrolhorario.onrender.com/api/estadousuarios/consulta');
                 this.StateData = await responseEstado.json();
                 console.log("Consulta exitosa");
             } catch (error) {
@@ -141,7 +141,7 @@ export default {
         async UpdateUser(id){
 
             try {
-                const response = await fetch(`http://localhost:3000/api/usuusuarios/actualizar/${id}`, {
+                const response = await fetch(`https://apicontrolhorario.onrender.com/api/usuusuarios/actualizar/${id}`, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'
                     },

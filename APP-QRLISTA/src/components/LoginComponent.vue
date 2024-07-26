@@ -75,7 +75,7 @@
         this.loading = true; 
   if (this.username !== '' && this.password !== '') {
     try {
-      const response = await fetch('http://localhost:3000/api/usuusuarios/consulta');
+      const response = await fetch('https://apicontrolhorario.onrender.com/api/usuusuarios/consulta');
       const users = await response.json();
 
       const userToLogin = users.find(user => user.nom_usuario === this.username);

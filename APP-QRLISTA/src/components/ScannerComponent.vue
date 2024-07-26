@@ -74,9 +74,7 @@ import {scanOutline, archiveOutline, busOutline} from 'ionicons/icons';
 import ToolbarReutilizableComponent from '../components/ToolbarReutilizableComponent.vue'
 
 const qrCodes = ref(null);
-const dialogOpen = ref(false);
 const cameraModalOpen = ref(false);
-const selectedArray = ref('array1');
 const ubicacion = ref(null);
 const ubicacionDetallada = ref('');
 let x=0;
@@ -92,17 +90,6 @@ const onDetect = (detectedCodes) => {
   localStorage.setItem('qrCodes', JSON.stringify(qrCodes.value));
   closeCameraModal();
   controlHorario();
- // peticiones();
-};
-
-const openDialog = () => {
-  dialogOpen.value = true;
-};
-
-const selectArray = (array) => {
-  selectedArray.value = array === 1 ? 'array1' : 'array2';
-  dialogOpen.value = false;
-  openCameraModal();
 };
 
 const openCameraModal = () => {
@@ -111,16 +98,6 @@ const openCameraModal = () => {
 };
 
 const closeCameraModal = () => {
-  cameraModalOpen.value = false;
-};
-
-const vaciarArreglos = () => {
-  qrCodes.value.array1 = [];
-  qrCodes.value.array2 = [];
-  localStorage.removeItem('qrCodes');
-};
-
-const cancelar = () => {
   cameraModalOpen.value = false;
 };
 
@@ -186,11 +163,11 @@ const controlHorario = () => {
     if(x==1){
       if(qrCodes.value=="SALIDA"){
         console.log("SALIDA");
-        metodop2(); 
+        postsalida(); 
         x=0;
         z=2;
       }else{
-        alert("No se escaneo el código QR Adecuado para la salida, escane el correcto por favor");
+        alert("No se escaneo el código QR Adecuado para la salida, escanee el correcto por favor");
         z=2;
       }
     }
@@ -199,31 +176,31 @@ const controlHorario = () => {
       if(qrCodes.value=="ENTRADA"){
         x=x+1;
         console.log("ENTRADA");
-        metodop();
+        postentrada();
         z=2;
       }else{
-        alert("No se escaneo el código QR Adecuado para la entrada, escane el correcto por favor");
+        alert("No se escaneo el código QR Adecuado para la entrada, escanee el correcto por favor");
         z=2;
       }
     }
   }
 }
 
-const metodop = async () => {
+const postentrada = async () => {
   const fecha = getCurrentDate();
   const horaEntrada = getCurrentTime();
-  const horaSalida = null; // Si necesitas registrar la hora de salida más tarde, ajusta esto.
+  const horaSalida = null; 
   
   const data = {
-    id_usuario: Userid.id_usuario, // Reemplaza con el ID del usuario correspondiente
+    id_usuario: Userid.id_usuario,
     fecha: fecha,
     hora_entrada: horaEntrada,
     hora_salida: horaSalida,
-    localizacion: ubicacionDetallada.value // Reemplaza con la localización correspondiente
+    localizacion: ubicacionDetallada.value 
   };
 
   try {
-    const response = await fetch('http://localhost:3000/api/controlhorario/crear', {
+    const response = await fetch('https://apicontrolhorario.onrender.com/api/controlhorario/crear', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -248,7 +225,7 @@ const metodop = async () => {
   }
 }
 
-const metodop2 = async ()=>{
+const postsalida = async ()=>{
   const cid = localStorage.getItem('idControlHorario');
   const conid = JSON.parse(cid);
   console.log("id",conid.id)
@@ -259,14 +236,14 @@ const metodop2 = async ()=>{
 
   const Salida = getCurrentTime();
   const datos = {
-    id_usuario: con.id_usuario, // Reemplaza con el ID del usuario correspondiente
+    id_usuario: con.id_usuario, 
     fecha: con.fecha,
     hora_entrada: con.hora_entrada,
     hora_salida: Salida,
-    localizacion: con.localizacion// Reemplaza con la localización correspondiente
+    localizacion: con.localizacion
   };
   try {
-    const response = await fetch(`http://localhost:3000/api/controlhorario/actualizar/${conid.id}`, {
+    const response = await fetch(`https://apicontrolhorario.onrender.com/api/controlhorario/actualizar/${conid.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -288,64 +265,6 @@ const metodop2 = async ()=>{
   } catch (error) {
     console.error('Error en la solicitud:', error);
     alert('Error en la solicitud:', error);
-  }
-}
-
-//Fetch para Post Aditivos
-let vali;
-
-const peticiones = () => {
-  for ( let i=0; i <qrCodes.value.array1.length; i++) {
-    const elemento = qrCodes.value.array1[x];
-    const elemento2 = qrCodes.value.array2[x];
-    if(elemento==elemento2){
-      vali="correcta";
-    }else{
-      vali="incorrecta";
-    }
-    
-    if(qrCodes.value.array1[x]!=null && qrCodes.value.array2[x]!=null  ){
-      x=x+1;
-      
-      try {
-        const fecha2 = new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' });
-        const fecha2Objeto = new Date(fecha2);
-        const desplazamiento = fecha2Objeto.getTimezoneOffset(); 
-        const fecha2EnUTC = new Date(fecha2Objeto.getTime() - desplazamiento * 60000); 
-        const fecha2ISO = fecha2EnUTC.toISOString(); 
-
-        fetch('https://cemexapi20240515142245.azurewebsites.net/api/Cat_Aditivos', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-            
-          },
-          body: JSON.stringify({
-            nom_aditivo: elemento,
-            nom_contenedor: elemento2,
-            descripcion_aditivo:'liquido',  
-            validacion: vali,
-            fecha: fecha2ISO,
-            localizacion: ubicacionDetallada.value,
-            id_usuusuario:Userid.id_usuario
-          })
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Error en la solicitud');
-            }
-            alert("Almacenado correctamente en la base de datos");
-          })
-          .then(data => {
-            console.log('Respuesta del servidor:', data); 
-          })
-          .catch(error => {
-            alert('Error en la solicitud:', error); 
-          });
-      } catch (error) {
-        alert('Error en la conexion a bd:', error); 
-      }
-    }
   }
 };
 </script>
