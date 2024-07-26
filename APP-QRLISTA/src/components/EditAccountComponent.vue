@@ -3,7 +3,7 @@
         <ion-content>
         <div class="container-header">
             <div class="header">
-            <ion-img src="/edit-account.png" class="header-image"></ion-img>
+            <ion-img src="/Edit.png" class="header-image"></ion-img>
             <ion-label class="edit"><b>EDITAR USUARIO</b></ion-label>
         </div>
         </div>
@@ -42,7 +42,7 @@
             
             <div class="Button-container">
                 <ion-button class="button-space" @click.prevent="handleButtonCancel" fill="outline"  color="danger">CANCELAR</ion-button>
-                <ion-button class="button-space" @click.prevent="UpdateUser(IdUserEdit)" fill="solid" color="primary">GUARDAR</ion-button>
+                <ion-button class="button-space blue-button" @click.prevent="UpdateUser(IdUserEdit)" fill="solid">GUARDAR</ion-button>
             </div>
         </div>
     </ion-content>
@@ -202,7 +202,6 @@ export default {
     height: 130px;
 }
 .header {
-
     display: flex;
     align-items: center;
     margin-bottom: 30px;
